@@ -1,0 +1,30 @@
+# macOS and local editor state
+.DS_Store
+._*
+*.swp
+*.swo
+
+# Xcode user state and generated builds
+xcuserdata/
+*.xcuserstate
+DerivedData/
+build/
+.build/
+*.xcarchive
+*.dSYM/
+*.ipa
+*.app/
+*.zip
+Playable/
+work/
+
+# Local release planning (not part of the public source distribution)
+APP_STORE_RELEASE.md
+OCTOBER_LAUNCH_PLAN.md
+
+# Local signing material and environment configuration
+.env
+.env.*
+*.p12
+*.mobileprovision
+*.provisionprofile
