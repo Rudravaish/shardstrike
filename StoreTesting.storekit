@@ -1,0 +1,64 @@
+{
+  "identifier": "a49b95ff-7a14-4a76-80d7-2d3e9d2a657e",
+  "nonRenewingSubscriptions": [],
+  "products": [
+    {
+      "displayPrice": "0.99",
+      "familyShareable": false,
+      "internalID": "88b09d81-cea7-4590-920d-3c2efc050910",
+      "localizations": [
+        {
+          "description": "100 hero gems for unlocking heroes. Local test purchase only.",
+          "displayName": "100 Hero Gems",
+          "locale": "en_US"
+        }
+      ],
+      "productID": "com.shardstrike.herogems.100",
+      "referenceName": "100 Hero Gems",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "e1814bd3-0065-436f-8693-f5257cfa526e",
+      "localizations": [
+        {
+          "description": "250 hero gems for unlocking heroes. Local test purchase only.",
+          "displayName": "250 Hero Gems",
+          "locale": "en_US"
+        }
+      ],
+      "productID": "com.shardstrike.herogems.250",
+      "referenceName": "250 Hero Gems",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "3.99",
+      "familyShareable": false,
+      "internalID": "73fec3fd-6a2a-4e1e-abe3-31dafd349de6",
+      "localizations": [
+        {
+          "description": "500 hero gems for unlocking heroes. Local test purchase only.",
+          "displayName": "500 Hero Gems",
+          "locale": "en_US"
+        }
+      ],
+      "productID": "com.shardstrike.herogems.500",
+      "referenceName": "500 Hero Gems",
+      "type": "Consumable"
+    }
+  ],
+  "settings": {
+    "_applicationInternalID": "0",
+    "_developerTeamID": "",
+    "_failTransactionsEnabled": false,
+    "_locale": "en_US",
+    "_storefront": "USA",
+    "_storeKitErrors": []
+  },
+  "subscriptionGroups": [],
+  "version": {
+    "major": 3,
+    "minor": 0
+  }
+}

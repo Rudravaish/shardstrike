@@ -28,3 +28,7 @@ OCTOBER_LAUNCH_PLAN.md
 *.p12
 *.mobileprovision
 *.provisionprofile
+
+# Python generation caches
+__pycache__/
+*.py[cod]

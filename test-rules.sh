@@ -45,3 +45,11 @@ xcrun swiftc -parse-as-library -swift-version 5 -module-cache-path "$TEST_WORK/M
   "$GAME_ROOT/GemRush/Aiming.swift" "$GAME_ROOT/GemRush/ArenaEnvironment.swift" \
   "$GAME_ROOT/Tests/ArenaEnvironmentTests.swift" -o "$TEST_WORK/ArenaEnvironmentTests"
 "$TEST_WORK/ArenaEnvironmentTests"
+
+xcrun swiftc -parse-as-library -swift-version 5 -module-cache-path "$TEST_WORK/ModuleCache" \
+  "$GAME_ROOT/GemRush/Hero.swift" "$GAME_ROOT/GemRush/GameAudio.swift" \
+  "$GAME_ROOT/Tests/GameAudioTests.swift" -framework AVFoundation -o "$TEST_WORK/GameAudioTests"
+"$TEST_WORK/GameAudioTests"
+
+# Decode every shipped music asset without opening an audio device.
+bash "$GAME_ROOT/test-music-assets.sh"

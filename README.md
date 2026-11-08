@@ -1,91 +1,100 @@
 # Shardstrike
 
-A native, offline 3D action game for **iPhone, iPad, and Mac**, built with **Swift, SwiftUI, and SceneKit**. Collect gems, upgrade a hero's weapon, and learn the attack patterns of 15 original bosses.
+A native, offline 3D action game for **iPhone, iPad, and Mac**, built with **Swift, SwiftUI, and SceneKit**.
 
-**Status:** playable development build · version 0.7.1 · no ads or real-money purchases. The game has not been published to the App Store.
+Collect gems in a 15-second sprint, upgrade your hero's weapon, then face a boss with its own attack pattern. Learn each encounter and advance through a 15-sector alien campaign.
+
+**Current source: 0.12.7 / build 23.** Playable development build; not yet published to the App Store. No ads. The gem shop has a StoreKit 2 test implementation; **live purchases remain disabled**.
 
 Formerly **Gem Rush**. The current app display name, source folder, Xcode project, and scheme retain that name; this repository uses Shardstrike as the project name.
 
-## Gameplay
+## In the game
 
-- **A short collection-to-combat loop:** each sector begins with one 15-second gem collection round, followed by weapon upgrades and a boss duel.
-- **Five playable heroes:** Scout, Titan, Pulse, Aegis, and Tempest have distinct weapons and unlockable powers. Guns use ammunition; fists do not, and shields and hammers return before another throw.
-- **Manual aiming:** touch and mouse controls use gentle, bounded assistance without locking onto a target. A timed dodge helps escape attacks.
-- **15 sequential boss encounters:** signature mechanics include portals, shockwaves, clones, gravity, and sweeping barriers. Cleared sectors remain replayable.
-- **Focused arenas:** levels rotate between open space, breakable cover, a jump pad, a moving platform, or a warned floor trap. Each duel has at most one additional arena mechanic.
-- **Persistent progression:** separate run and hero currencies, first-clear rewards, backward-compatible saves, and isolated replay state prevent replay farming and preserve the main campaign.
+- **Five original heroes:** Scout's blaster, Titan's fists, Pulse's cannon, Aegis's returning shield, and Tempest's returning hammer. Each hero has independent weapon upgrades and an unlockable power.
+- **Fifteen sequential bosses:** encounters introduce portals, returning discs, shockwaves, clones, crystals, gravity, traps, and darkness. Cleared sectors remain replayable.
+- **Manual aiming:** mouse or touch controls with gentle, bounded assistance. Dodge timing, positioning, and weapon travel matter.
+- **Focused arenas:** sectors rotate between open space, breakable cover, a jump pad, a moving platform, or a warned floor trap.
+- **Persistent progression:** separate hero and run currencies, first-clear rewards, independent hero equipment, and isolated replays prevent repeated gem farming.
+- **Original audio:** synthesized weapon sounds and hero efforts, a continuous hub theme, a collection loop, and fifteen percussion-led battle tracks rising from 112 to 168 BPM.
+- **Short, platform-specific instructions:** keyboard prompts on Mac and touch prompts on iPhone/iPad, with weapon-specific guidance.
 
-All characters and arena art are constructed from original geometric models in code. No external asset packs or package dependencies are required.
+Characters and arena art are constructed from original geometric models in code. The soundtrack is bundled for offline playback. See [music sources and provenance](GemRush/Resources/MUSIC.md).
 
 ## Run locally
 
-Requires macOS and Xcode. The current build has been verified with **Xcode 26.6 and the iOS 26.5 SDK**. Deployment targets are **iOS/iPadOS 17+** and **macOS 13+**.
-
-### Xcode
+Requires macOS and Xcode. The last verified toolchain was **Xcode 26.6 / iOS 26.5 SDK**. Deployment targets are **iOS/iPadOS 17+** and **macOS 13+**.
 
 1. Open `GemRush.xcodeproj`.
 2. Select the shared **GemRush** scheme.
-3. Choose **My Mac** or an iPhone/iPad simulator, then Run.
+3. Choose **My Mac**, an iPhone/iPad simulator, or a configured physical device, then Run.
 
-For a physical iPhone or iPad, configure your own development team and a unique bundle identifier in Signing & Capabilities. The repository does not contain signing credentials.
+For a physical device, select your own development team and a unique bundle identifier in Signing & Capabilities. Signing credentials and user-specific Xcode state are not included.
 
-### Mac build script
+Alternatively, build on the current Mac:
 
-From the repository root:
-
-```bash
+```sh
 bash build-mac.sh
 open "Playable/Gem Rush.app"
 ```
 
-The script builds and locally signs the app for the host Mac. `Playable/Gem Rush.app` is generated locally and is not included in source control. This is a development build, not a notarized distribution package.
-
-### Controls
+This creates a locally signed development app, not a notarized distribution package.
 
 | Action | Mac | iPhone / iPad |
 | --- | --- | --- |
 | Move | W/A/S/D or arrow keys | Left thumbstick |
-| Aim and fire | Mouse + click or Space | Right thumbstick |
+| Aim and attack | Mouse + click or Space | Right thumbstick |
 | Dodge | Shift | Dodge button |
 | Reload guns | R | Reload button |
-| Use unlocked hero power | E | Power button |
+| Use unlocked power | E | Power button |
 | Pause | P or Escape | Pause button |
 
-During collection, clicking or tapping a destination also moves the hero. Backgrounding the app pauses and saves the campaign.
+Fists, shields, and hammers do not use ammunition. During collection, clicking or tapping a destination also moves the hero. Backgrounding the app pauses and saves the campaign.
 
 ## Engineering
 
-| Area | Implementation |
+| Area | Main sources |
 | --- | --- |
-| Rules and progression | `GameRules.swift` and `PlayerProfile.swift` model phases, upgrades, earned level access, first-clear rewards, and save migration. |
-| Combat models | `Aiming.swift`, `BossPatterns.swift`, and `HeroCombat.swift` implement swept moving-target collision checks, boss attacks, weapon behavior, and abilities. |
-| Interactive arenas | `ArenaEnvironment.swift` models cover durability, jumps, moving platforms, trap timing, and saved arena state. |
-| Game coordination | `GameController.swift` connects input, the game loop, SceneKit encounters, damage, pause/resume, and Codable persistence. |
-| Rendering and interface | `SceneArt.swift` and `ArenaArt.swift` build the 3D world; `ContentView.swift` provides the SwiftUI campaign map, armory, hero selection, and controls. |
+| Campaign, purchases and saved progression | `GameRules.swift`, `PlayerProfile.swift` |
+| Aim, collisions and combat abilities | `Aiming.swift`, `BossPatterns.swift`, `HeroCombat.swift` |
+| Arena mechanics and procedural art | `ArenaEnvironment.swift`, `ArenaArt.swift`, `SceneArt.swift` |
+| Input, simulation and persistence | `GameController.swift` |
+| Home, campaign, armory and tutorials | `ContentView.swift` |
+| Bounded, precomputed effects and music playback | `GameAudio.swift` |
+| StoreKit and durable local purchase delivery | `GemStore.swift`, `PurchaseLedger.swift` |
 
-Replay sessions use a temporary copy of campaign gear and skip collection. Returning home or relaunching restores the main campaign. New campaign requires confirmation and resets heroes, currencies, gear, and cleared sectors.
+No third-party application packages are required. Audio generation tools use Python/NumPy/SciPy and FFmpeg during development; the game plays the checked-in assets without those tools.
 
 ## Verification
 
-Run both suites from the repository root:
+The **October 29, 2026** verification of this version passed **6,046 automated assertions**, plus **48 native combat-audio** and **152 native soundtrack** checks. Mac and generic unsigned iPhone Release builds succeeded. An isolated stress workload covered all 75 hero/boss pairings over 180,000 simulation ticks. These are dated validation results, not a claim of flawless gameplay or App Store approval.
 
-```bash
+```sh
 bash test-rules.sh
 bash test-controller.sh
+bash test-store-ledger.sh
+bash test-performance.sh
 ```
 
-The scripts compile the production Swift code directly and use temporary test storage. They do not modify the player's saved campaign.
+Tests use temporary storage and do not modify the player's saved campaign. Native playback fixtures can be built with `test-combat-audio.sh` and `test-music-playback.sh`.
 
-Version 0.7.1 has **2,815 passing automated assertions**: 2,189 model/rules assertions and 626 native controller assertions. Coverage includes progression gates, reward limits, save recovery, moving-target collisions, returning weapons, boss hazards, focused arena layouts, and pause/replay restoration. These are assertions, not 2,815 independent test cases.
+See [QA_REPORT.md](QA_REPORT.md) for remaining performance and balance findings. Physical-device touch, heat, audio routes, full human campaign runs, and Apple checkout validation still need work.
 
-Validation also includes successful macOS and unsigned iOS Release builds, plus manual Mac gameplay checks. Physical-device performance, touch ergonomics, and broader difficulty balancing still need testing; no frame-rate or production-readiness claim is made.
+## Store and release status
 
-This project was developed with AI-assisted coding. Generated changes were reviewed and iterated through automated regression checks, native builds, and hands-on playtesting, including fixes for collision behavior, campaign resets, repeated rewards, and visual clutter.
+The shared **GemRush Store Testing** scheme uses `StoreTesting.storekit` and separate test saves. It does not charge real money. See [STORE_SETUP.md](STORE_SETUP.md) for the draft catalog and test procedure.
 
-## Roadmap
+The paid-wallet implementation is local. Reinstall/multi-device recovery, refund reconciliation, and end-to-end Apple checkout must be completed before enabling live sales. Prices are proposals, not a released offer.
 
-- Test and tune combat on physical iPhones and iPads.
-- Add sound, a first-play tutorial, and settings.
-- Refine difficulty and expand the campaign beyond 15 levels.
-- Finish app identity, store artwork, privacy/support pages, signing, and TestFlight preparation.
-- Resolve or remove the inactive Store placeholders before release. No StoreKit products, gem payments, or payment processing are implemented.
+Before public release:
+
+- Resolve the known frame hitches and tune newly unlocked heroes for later sectors.
+- Playtest the complete campaign on physical iPhones/iPads through TestFlight.
+- Finalize app identity, icon, screenshots, privacy/support pages, and accessibility/settings.
+- Configure the publishing team and signing; validate a release archive.
+- Complete purchase recovery and sandbox testing, or launch with the shop disabled.
+
+## Development
+
+This project was developed with AI-assisted coding and iterated through automated checks, native builds, and hands-on feedback. This public source snapshot excludes local saves, signing material, private account notes, generated builds, and development caches.
+
+Public visibility does not imply an open-source license. No license grant has been selected for this repository.

@@ -3,7 +3,7 @@ set -euo pipefail
 
 GAME_ROOT="$(cd "$(dirname "$0")" && pwd)"
 GAME_WORK="${GEMRUSH_BUILD_WORK:-$GAME_ROOT/.build/mac}"
-GAME_APP="$GAME_ROOT/Playable/Gem Rush.app"
+GAME_APP="${GEMRUSH_BUILD_APP:-$GAME_ROOT/Playable/Gem Rush.app}"
 GAME_SDK="$(xcrun --sdk macosx --show-sdk-path)"
 GAME_ARCH="$(uname -m)"
 
@@ -31,8 +31,8 @@ cat > "$GAME_APP/Contents/Info.plist" <<'PLIST'
   <key>CFBundleInfoDictionaryVersion</key><string>6.0</string>
   <key>CFBundleName</key><string>Gem Rush</string>
   <key>CFBundlePackageType</key><string>APPL</string>
-  <key>CFBundleShortVersionString</key><string>0.7.1</string>
-  <key>CFBundleVersion</key><string>8</string>
+  <key>CFBundleShortVersionString</key><string>0.12.7</string>
+  <key>CFBundleVersion</key><string>23</string>
   <key>LSApplicationCategoryType</key><string>public.app-category.action-games</string>
   <key>LSMinimumSystemVersion</key><string>13.0</string>
   <key>NSHighResolutionCapable</key><true/>
@@ -42,6 +42,8 @@ cat > "$GAME_APP/Contents/Info.plist" <<'PLIST'
 PLIST
 
 cp "$GAME_ROOT/GemRush/PrivacyInfo.xcprivacy" "$GAME_APP/Contents/Resources/PrivacyInfo.xcprivacy"
+
+cp "$GAME_ROOT"/GemRush/Resources/*.m4a "$GAME_APP/Contents/Resources/"
 
 codesign --force --sign - "$GAME_APP"
 printf 'Built %s\n' "$GAME_APP"
